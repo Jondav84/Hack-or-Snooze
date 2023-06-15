@@ -43,7 +43,7 @@ async function signup(evt) {
 
   // User.signup retrieves user info from API and returns User instance
   // which we'll make the globally-available, logged-in user.
-  currentUser = await User.signup(username, password, name);
+  currentUser = await User.signup(name, username, password);
 
   saveUserCredentialsInLocalStorage();
   updateUIOnUserLogin();
@@ -118,6 +118,5 @@ async function updateUIOnUserLogin() {
   $allStoriesList.show();
 
   updateNavOnLogin();
-  generateUserProfile();
   $storiesContainer.show();
 }

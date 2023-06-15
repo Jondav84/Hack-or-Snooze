@@ -225,7 +225,7 @@ class User {
   }
 
   // delete story from Favorites list in API
-  async deletFavorite(story) {
+  async deleteFavorite(story) {
     this.favorites = this.favorites.filter((s) => s.storyId !== story.storyId);
     await this.addOrDeleteFavorite("DELETE", story);
   }

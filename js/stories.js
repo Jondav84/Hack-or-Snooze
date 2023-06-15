@@ -90,7 +90,7 @@ async function submitStory(evt) {
 
   $allStoriesList.prepend($story);
   $submitStoryForm.hide();
-  $submitStoryForm.reset();
+  $submitStoryForm.trigger("reset");
 }
 
 $submitStoryForm.on("submit", submitStory);
@@ -117,7 +117,8 @@ function putFavoritesListOnPage() {
 
 // toggle favorite story
 async function toggleFavorites(evt) {
-  const storyId = $(evt.target).closest("li").attr("id");
+  const $target = $(evt.target);
+  const storyId = $target.closest("li").attr("id");
   const story = storyList.stories.find((s) => s.storyId === storyId);
 
   if ($target.hasClass("fas")) {
