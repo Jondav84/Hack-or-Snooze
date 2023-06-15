@@ -30,13 +30,14 @@ function generateStoryMarkup(story, myStory = false) {
 
   return $(`
       <li id="${story.storyId}">
+       
+        ${myStory ? getTrashCan() : ""}
+        ${showStar ? getStar(story, currentUser) : ""}
+        <a href="${story.url}" target="a_blank" class="story-link">
+          ${story.title}
+        </a>
+        <small class="story-hostname">(${hostName})</small>
         <div>
-          ${myStory ? getTrashCan() : ""}
-          ${showStar ? getStar(story, currentUser) : ""}
-          <a href="${story.url}" target="a_blank" class="story-link">
-            ${story.title}
-          </a>
-          <small class="story-hostname">(${hostName})</small>
           <small class="story-author">by ${story.author}</small>
           <small class="story-user">posted by ${story.username}</small>
         </div>

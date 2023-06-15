@@ -11,6 +11,7 @@
 function navAllStories(evt) {
   console.debug("navAllStories", evt);
   hidePageComponents();
+  $storiesContainer.show();
   putStoriesOnPage();
 }
 
@@ -40,8 +41,9 @@ function updateNavOnLogin() {
 // function to show the submit form on nav-link "submit"  click
 function navSubmitClick() {
   hidePageComponents();
-  $allStoriesList.show();
+  $storiesContainer.show();
   $submitStoryForm.show();
+  $allStoriesList.show();
 }
 
 $navSubmit.on("click", navSubmitClick);
@@ -50,6 +52,7 @@ $navSubmit.on("click", navSubmitClick);
 
 function navMyStoriesClick() {
   hidePageComponents();
+  $storiesContainer.show();
   putMyStoriesOnPage();
   $myStories.show();
 }
@@ -60,6 +63,7 @@ $navMyStories.on("click", navMyStoriesClick);
 
 function navFavoritesClick() {
   hidePageComponents();
+  $storiesContainer.show();
   putFavoritesListOnPage();
 }
 

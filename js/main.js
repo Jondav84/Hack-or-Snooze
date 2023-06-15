@@ -5,7 +5,7 @@
 // So we don't have to keep re-finding things on page, find DOM elements once:
 // HTML consts
 const $body = $("body");
-const $storiesContainer = $("#stories-container");
+const $storiesContainer = $(".stories-container");
 
 const $storyLists = $(".stories-list");
 
@@ -39,8 +39,10 @@ function hidePageComponents() {
     $loginForm,
     $signupForm,
     $submitStoryForm,
-    $storyLists,
     $storiesContainer,
+    $allStoriesList,
+    $myStories,
+    $favorites,
   ];
   components.forEach((c) => c.hide());
 }
