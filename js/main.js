@@ -3,15 +3,28 @@
 "use strict";
 
 // So we don't have to keep re-finding things on page, find DOM elements once:
-
+// HTML consts
 const $body = $("body");
-const $newStoryForm = $("new-story-form");
+const $storiesContainer = $("#stories-container");
+
+const $storyLists = $(".stories-list");
+
+const $myStories = $("#my-stories");
+const $favorites = $("#favorite-stories");
 const $storiesLoadingMsg = $("#stories-loading-msg");
 const $allStoriesList = $("#all-stories-list");
-
+// form consts
+const $submitStoryForm = $("#submit-new-story");
 const $loginForm = $("#login-form");
 const $signupForm = $("#signup-form");
-
+//input consts
+const $titleInput = $("#title-input");
+const $urlInput = $("#url-input");
+const $authorInput = $("#author-input");
+//nav consts
+const $navFavorites = $("#nav-favorites");
+const $navMyStories = $("#nav-my-stories");
+const $navSubmit = $("#nav-submit");
 const $navLogin = $("#nav-login");
 const $navUserProfile = $("#nav-user-profile");
 const $navLogOut = $("#nav-logout");
@@ -22,7 +35,7 @@ const $navLogOut = $("#nav-logout");
  */
 
 function hidePageComponents() {
-  const components = [$allStoriesList, $loginForm, $signupForm];
+  const components = [$loginForm, $signupForm, $submitStoryForm, $storyLists];
   components.forEach((c) => c.hide());
 }
 

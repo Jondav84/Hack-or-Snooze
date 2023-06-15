@@ -1,3 +1,5 @@
+/** @format */
+
 "use strict";
 
 /******************************************************************************
@@ -21,6 +23,7 @@ function navLoginClick(evt) {
   hidePageComponents();
   $loginForm.show();
   $signupForm.show();
+  $storiesContainer.hide();
 }
 
 $navLogin.on("click", navLoginClick);
@@ -34,3 +37,31 @@ function updateNavOnLogin() {
   $navLogOut.show();
   $navUserProfile.text(`${currentUser.username}`).show();
 }
+
+// function to show the submit form on nav-link "submit"  click
+function navSubmitClick() {
+  hidePageComponents();
+  $allStoriesList.show();
+  $submitStoryForm.show();
+}
+
+$navSubmit.on("click", navSubmitClick);
+
+//function to show my stories on click of nav-link
+
+function navMyStoriesClick() {
+  hidePageComponents();
+  putMyStoriesOnPage();
+  $myStories.show();
+}
+
+$navMyStories.on("click", navMyStoriesClick);
+
+// fuction to show favs on click
+
+function navFavoritesClick() {
+  hidePageComponents();
+  putFavoritesListOnPage();
+}
+
+$navFavorites.on("click", navFavoritesClick);

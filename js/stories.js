@@ -21,24 +21,46 @@ async function getAndShowStoriesOnStart() {
  * Returns the markup for the story.
  */
 
-function generateStoryMarkup(story) {
+function generateStoryMarkup(story, myStory = false) {
   // console.debug("generateStoryMarkup", story);
 
   const hostName = story.getHostName();
+
+  const showStar = Boolean(currentUser);
+
   return $(`
       <li id="${story.storyId}">
-        <a href="${story.url}" target="a_blank" class="story-link">
-          ${story.title}
-        </a>
-        <small class="story-hostname">(${hostName})</small>
-        <small class="story-author">by ${story.author}</small>
-        <small class="story-user">posted by ${story.username}</small>
+        <div>
+          ${myStory ? getTrashCan() : ""}
+          ${showStar ? getStar(story, currentUser) : ""}
+          <a href="${story.url}" target="a_blank" class="story-link">
+            ${story.title}
+          </a>
+          <small class="story-hostname">(${hostName})</small>
+          <small class="story-author">by ${story.author}</small>
+          <small class="story-user">posted by ${story.username}</small>
+        </div>
       </li>
     `);
 }
 
-/** Gets list of stories from server, generates their HTML, and puts on page. */
+// added trash can to delete
+function getTrashCan() {
+  return `<span class="trash-can">
+            <i class="fas fa-trash-alt"></i>
+          </span>`;
+}
 
+//added a star for adding/removing favorites
+function getStar(story, user) {
+  const isFavorite = user.isFavorite(story);
+  const starType = isFavorite ? "fas" : "far";
+  return `<span class="star">
+            <i class="${starType} fa-star"></i>
+          </span>`;
+}
+
+/** Gets list of stories from server, generates their HTML, and puts on page. */
 function putStoriesOnPage() {
   console.debug("putStoriesOnPage");
 
@@ -53,21 +75,67 @@ function putStoriesOnPage() {
   $allStoriesList.show();
 }
 
-// function to get the story form input values and Add them to the story list in the api
-// also creates the new story element to display in the HTML and adds it to the story list
-//
-async function submitStory(e) {
-  e.preventDefault();
-  const author = $("#author-input").val();
-  const title = $("#title-input").val();
-  const url = $("#url-input").val();
-  const username = currentUser.username;
-  const story = { title, url, author, username };
-  const response = await storyList.addStory(story);
+// submit story function
+async function submitStory(evt) {
+  evt.preventDefault();
+
+  const title = $titleInput.val();
+  const author = $authorInput.val();
+  const url = $urlInput.val();
+  const storyData = { title, author, url };
+
+  const response = await storyList.addStory(currentUser, storyData);
+
   const $story = generateStoryMarkup(response);
+
   $allStoriesList.prepend($story);
-  $newStoryForm.hide();
-  $newStoryForm.reset();
+  $submitStoryForm.hide();
+  $submitStoryForm.reset();
 }
 
-$newStoryForm.on("submit", submitStory);
+$submitStoryForm.on("submit", submitStory);
+
+// functionality to show users stories
+function putMyStoriesOnPage() {
+  $myStories.empty();
+  currentUser.ownStories.forEach((story) => {
+    let $story = generateStoryMarkup(story, true);
+    $myStories.append($story);
+  });
+  $myStories.show();
+}
+
+// show users favorites functions
+function putFavoritesListOnPage() {
+  $favorites.empty();
+  currentUser.favorites.forEach((s) => {
+    const $story = generateStoryMarkup(s);
+    $favorites.append($story);
+  });
+  $favorites.show();
+}
+
+// toggle favorite story
+async function toggleFavorites(evt) {
+  const storyId = $(evt.target).closest("li").attr("id");
+  const story = storyList.stories.find((s) => s.storyId === storyId);
+
+  if ($target.hasClass("fas")) {
+    await currentUser.deleteFavorite(story);
+    $target.closest("i").toggleClass("fas far");
+  } else {
+    await currentUser.addFavorite(story);
+    $target.closest("i").toggleClass("fas far");
+  }
+}
+
+$storyLists.on("click", ".star", toggleFavorites);
+
+//delete stories event
+async function deleteStory(evt) {
+  const storyId = $(evt.target).closest("li").attr("id");
+  await storyList.removeStory(currentUser, storyId);
+  await putMyStoriesOnPage();
+}
+
+$myStories.on("click", ".trash-can", deleteStory);

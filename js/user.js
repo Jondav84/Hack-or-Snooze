@@ -1,3 +1,5 @@
+/** @format */
+
 "use strict";
 
 // global to hold the User instance of the currently-logged-in user
@@ -107,10 +109,15 @@ function saveUserCredentialsInLocalStorage() {
  * - generate the user profile part of the page
  */
 
-function updateUIOnUserLogin() {
+async function updateUIOnUserLogin() {
   console.debug("updateUIOnUserLogin");
+  hidePageComponents();
 
+  // re-display stories (so that "favorite" stars can appear)
+  putStoriesOnPage();
   $allStoriesList.show();
 
   updateNavOnLogin();
+  generateUserProfile();
+  $storiesContainer.show();
 }
